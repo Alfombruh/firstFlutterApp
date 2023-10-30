@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,11 +62,24 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BigCard(pair: pair),
+            SizedBox(
+              height: 10,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                MyButton("Next Name", appState.getNext),
-                MyButton("Add To Favourites", appState.addFavourites),
+                MyButton("Next Name", appState.getNext, Icon(Icons.sailing)),
+                SizedBox(
+                  width: 5,
+                ),
+                MyButton("Favourites", appState.addFavourites, Icon(
+                Icons.favorite,
+                color: Colors.white,
+                size: 15.0,
+                semanticLabel: 'You liked this',
+                )
+                ),
               ],
             ),
           ],
@@ -78,20 +93,24 @@ class MyButton extends StatelessWidget {
   const MyButton(
     this.text,
     this.callback,
+    [this.icon]
   );
   final VoidCallback callback;
   final String text;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.pink[400],
         ),
         onPressed: () {
           callback();
         },
-        child: ButtonText(text));
+        label: ButtonText(text),
+        icon: icon?? SizedBox.shrink(),
+        );
   }
 }
 
@@ -109,7 +128,7 @@ class ButtonText extends StatelessWidget {
       style: TextStyle(
           color: Colors.white,
           fontFamily: 'Raleway',
-          fontSize: 10,
+          fontSize: 15,
           fontWeight: FontWeight.bold),
     );
   }
